@@ -19,7 +19,7 @@ public class CalculateArctangens {
         double squaredx = x * x; // х^2
 
         double predstavleniya_error = 0.0;
-
+        double okryglenie_error = 0.0;
         double[] sumArray = new double[nMax];//Массив для хранения суммы каждого ряда
         double[] fraction = new double[nMax];//Массив для хранения значений каждого члена ряда
         //вычисляет каждый член ряда, записывает в массив и прибавляет к сумме
@@ -31,7 +31,7 @@ public class CalculateArctangens {
             numerator *= squaredx;
             ones = -ones;
 
-            predstavleniya_error += abs(fraction[k]) * gamma(k);
+            predstavleniya_error += abs(fraction[k]) * gamma(4*k + 2);
         }
 
         //Оценка погрешности обрыва ряда
@@ -39,16 +39,18 @@ public class CalculateArctangens {
         obryv_ryada_error += Math.ulp(obryv_ryada_error);
 
         //Оценка погрешности, возникающей из-за округления каждого члена ряда
-        double okryglenie_error = 0.0;
         for(int i = 0; i < nMax; i++) {
             okryglenie_error +=  Math.abs(fraction[i]) * U;
         }
         okryglenie_error *= gamma(nMax);
 
+        //ошибка суммирования
         double sum_error = gamma(nMax - 1) * okryglenie_error;
 
+        //абсолютная ошибка
         double abs_error = predstavleniya_error + obryv_ryada_error + okryglenie_error + sum_error;
 
         return new Result(sum, fraction, sumArray, predstavleniya_error, obryv_ryada_error, okryglenie_error, sum_error, abs_error);
     };
 }
+//U когда одно округление
