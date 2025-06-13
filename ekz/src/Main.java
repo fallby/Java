@@ -1,8 +1,6 @@
 import java.math.BigDecimal;
 import static java.lang.Math.abs;
 
-// почему ошибка точно будет нормальной, функция которая завышает в большую сторону
-
 public class Main {
     public static void main(String[] args) {
         int nMaxx = 11; //количество членов ряда x
@@ -15,15 +13,14 @@ public class Main {
         Result arctanx = CalculateArctangens.arctangens(x, nMaxx);
         Result arctany = CalculateArctangens.arctangens(y, nMaxy);
 
-        //ошибки при округлении и вычитании
-        //ошибка при умножении не может быть из-за степени
-        double atanx16 = 16.0 * arctanx.sum * CalculateArctangens.U; // возникает ошибка при умножении из-за округления
-        double atany4 = 4.0 * arctany.sum * CalculateArctangens.U;
+        //ошибка разности
+        double atanx16 = 16.0 * arctanx.sum;
+        double atany4 = 4.0 * arctany.sum;
         double atanx16MinusAtany4 = atanx16 - atany4;
 
-        double raznost_error = atanx16MinusAtany4 * CalculateArctangens.U;
+        double raznost_error = abs(atanx16MinusAtany4) * CalculateArctangens.U;
 
-        double total_error = arctanx.abs_error * 16.0 + arctany.abs_error * 4.0 + raznost_error; //будет больше потому что сама ошибка с ошибкой округления
+        double total_error = arctanx.abs_error * 16.0 + arctany.abs_error * 4.0 + raznost_error;
         System.out.println("total_error = " + total_error);
 
         double result = 4.0 * (4.0 * arctanx.sum - arctany.sum);
